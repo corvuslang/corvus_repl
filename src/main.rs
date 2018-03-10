@@ -33,11 +33,11 @@ fn main() {
 
     reader.set_completer(Some(repl.clone()));
 
-    println!("this is Corvus (press Ctrl-D to exit)");
+    println!("This is Corvus (press Ctrl-D to exit)");
     println!("");
 
     loop {
-        let mut line = match reader.readline("🐦 ") {
+        let mut line = match reader.readline("∫∘≻ ") {
             Ok(line) => line,
             Err(ReadlineError::Eof) => break,
             Err(error) => panic!("{:?}", error),
