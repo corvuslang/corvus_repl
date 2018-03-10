@@ -68,12 +68,17 @@ fn main() {
             }
             ":type" => match repl.type_of(rest) {
                 Ok((stx, ty, globals)) => {
-                    println!("{} :: {}", stx, ty);
-                    if globals.len() > 0 {
-                        println!("\nInferred globals:");
-                        for (ref name, ref ty) in globals {
-                            println!("{} :: {}", name, ty);
+                    println!("{} ~ {}", stx, ty);
+                    let mut printed_globals_header = false;
+                    for (ref name, ref ty) in globals {
+                        if repl.types.borrow().get(name).is_some() {
+                            continue;
                         }
+                        if !printed_globals_header {
+                            println!("\nInferred inputs:");
+                            printed_globals_header = true;
+                        }
+                        println!("{} ~ {}", name, ty);
                     }
                 }
                 Err(message) => println!("{}", message),
@@ -86,6 +91,22 @@ fn main() {
                 let types = repl.as_ref().types.borrow().flatten();
                 for (name, val) in repl.as_ref().values.borrow().flatten() {
                     println!("{} = {} :: {}", name, val, types.get(&name).unwrap());
+                }
+            }
+            ":set" => {
+                match rest.trim().find(|ch: char| ch.is_whitespace()) {
+                    None => {
+                        println!(":set needs a variable name and expression. E.g. `:set foo \"hello\"");
+                    }
+                    Some(pos) => {
+                        repl.eval(rest[pos..].trim_left(), true)
+                            .map(|(val, ty)| {
+                                let name = &rest[..pos];
+                                println!("{} = {} ~ {}", name, val, ty);
+                                repl.set(name, val, ty);
+                            })
+                            .unwrap_or_else(|e| println!("{}", e));
+                    }
                 }
             }
             _ => println!("unknown command: {}", cmd),
@@ -114,9 +135,12 @@ impl REPL {
 
     pub fn type_of(&self, input: &str) -> Result<(Syntax, Type, InferredEnv), String> {
         self.parse(input).and_then(|stx| {
-            use std::iter::empty;
-            match corvus_core::type_of(&*self.ns.borrow(), empty(), &stx) {
-                Ok((ty, _inferred_env)) => Ok((stx.clone(), ty, _inferred_env)),
+            let types = self.types.borrow().flatten();
+            let global_types = types.iter().map(|(name, ty)| {
+                (name.clone(), ty.as_ref().clone())
+            });
+            match corvus_core::type_of(&*self.ns.borrow(), global_types, &stx) {
+                Ok((ty, inferred_env)) => Ok((stx.clone(), ty, inferred_env)),
                 Err(type_errors) => Err(type_errors),
             }
         })
@@ -124,11 +148,16 @@ impl REPL {
 
     pub fn eval(&self, input: &str, _safe: bool) -> Result<(Value, Type), String> {
         self.type_of(input).and_then(|(stx, ty, _inferred_env)| {
-            let mut values = self.values.borrow_mut();
-            stx.eval(&self.ns, &mut values)
+            let values = self.values.borrow();
+            stx.eval(&self.ns, &values)
                 .map(move |val| (val, ty))
                 .map_err(|err| format!("runtime error: {}", err))
         })
+    }
+
+    pub fn set(&self, name: &str, val: Value, ty: Type) {
+        self.values.borrow_mut().insert(String::from(name), val);
+        self.types.borrow_mut().insert(String::from(name), ty);
     }
 }
 
