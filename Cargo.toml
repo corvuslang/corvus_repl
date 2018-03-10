@@ -6,4 +6,3 @@ authors = ["Stephen Sugden <me@stephensugden.com>"]
 [dependencies]
 rustyline = "1.0.0"
 corvus_core = { git = "https://github.com/corvuslang/corvus_core", branch = "develop" }
-corvus_standalone = { git = "https://github.com/corvuslang/corvus_standalone", branch = "develop" }

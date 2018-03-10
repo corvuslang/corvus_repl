@@ -1,5 +1,4 @@
 extern crate corvus_core;
-extern crate corvus_standalone;
 extern crate rustyline;
 
 use std::cell::RefCell;
@@ -8,9 +7,9 @@ use rustyline::error::ReadlineError;
 use rustyline::Editor;
 use rustyline::completion::Completer;
 
-use corvus_standalone::Value;
 use corvus_core::{parse, Eval, INamespace, InferredEnv, Namespace, ParseRule, Scope,
                   SharedNamespace, Syntax, Type};
+use corvus_core::standalone::Value;
 
 fn main() {
     let mut reader: Editor<Rc<REPL>> = Editor::new();

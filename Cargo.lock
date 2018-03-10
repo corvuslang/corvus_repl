@@ -6,9 +6,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "corvus_core"
 version = "0.1.0"
-source = "git+https://github.com/corvuslang/corvus_core?branch=develop#c0505c1bdb993cdc980a3db81cf4679199cf1f1f"
+source = "git+https://github.com/corvuslang/corvus_core?branch=develop#ce6cab5af0e0655d3b613ec7e168f7eb1f03a3a3"
 dependencies = [
- "debug_macros 0.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "pest 1.0.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "pest_derive 1.0.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.27 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -20,22 +19,8 @@ name = "corvus_repl"
 version = "0.1.0"
 dependencies = [
  "corvus_core 0.1.0 (git+https://github.com/corvuslang/corvus_core?branch=develop)",
- "corvus_standalone 0.1.0 (git+https://github.com/corvuslang/corvus_standalone?branch=develop)",
  "rustyline 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
-
-[[package]]
-name = "corvus_standalone"
-version = "0.1.0"
-source = "git+https://github.com/corvuslang/corvus_standalone?branch=develop#399fc61f2008d092805c2c3bd20d51e3188c474f"
-dependencies = [
- "corvus_core 0.1.0 (git+https://github.com/corvuslang/corvus_core?branch=develop)",
-]
-
-[[package]]
-name = "debug_macros"
-version = "0.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "encode_unicode"
@@ -163,8 +148,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [metadata]
 "checksum bitflags 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "8dead7461c1127cf637931a1e50934eb6eee8bff2f74433ac7909e9afcee04a3"
 "checksum corvus_core 0.1.0 (git+https://github.com/corvuslang/corvus_core?branch=develop)" = "<none>"
-"checksum corvus_standalone 0.1.0 (git+https://github.com/corvuslang/corvus_standalone?branch=develop)" = "<none>"
-"checksum debug_macros 0.0.1 (registry+https://github.com/rust-lang/crates.io-index)" = "46ad565e14b3646d58191c7ac0ff29deefa3589e600b9f52e96098e8798aa2fc"
 "checksum encode_unicode 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)" = "28d65f1f5841ef7c6792861294b72beda34c664deb8be27970f36c306b7da1ce"
 "checksum kernel32-sys 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "7507624b29483431c0ba2d82aece8ca6cdba9382bff4ddd0f7490560c056098d"
 "checksum libc 0.2.39 (registry+https://github.com/rust-lang/crates.io-index)" = "f54263ad99207254cf58b5f701ecb432c717445ea2ee8af387334bdd1a03fdff"
